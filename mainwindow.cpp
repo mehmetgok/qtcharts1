@@ -65,29 +65,72 @@ MainWindow::MainWindow(QWidget *parent) :
 
         series->append(angle, sin_angle);
 
-         series2->append(angle, sin_angle*0.5);
+        series2->append(angle, sin_angle*0.5);
     }
 
+    // Font for graph axes
     QFont font;
-     font.setPixelSize(7);
-
-
-
-
-
+    font.setPixelSize(7);
 
 
     chart = new QChart();
     chart->legend()->hide();
-    chart->addSeries(series);
-    chart->addSeries(series2);
-    chart->createDefaultAxes();
 
-      chart->axisX()->setLabelsFont(font);
-      chart->axisY()->setLabelsFont(font);
+
+    QValueAxis *axisX = new QValueAxis;
+    axisX->setTickCount(20);
+    axisX->setLabelsFont(font);
+
+    chart->addAxis(axisX, Qt::AlignBottom);
+
+
+    QValueAxis *axisY = new QValueAxis;
+
+     axisY->setLabelsFont(font);
+    axisY->setLinePenColor(series->pen().color());
+
+    chart->addSeries(series);
+
+    chart->addAxis(axisY, Qt::AlignLeft);
+
+    series->attachAxis(axisX);
+    series->attachAxis(axisY);
+
+
+    QValueAxis *axisY3 = new QValueAxis;
+
+    axisY3->setLabelsFont(font);
+
+    chart->addSeries(series2);
+
+     axisY3->setLinePenColor(series2->pen().color());
+
+     axisY3->setRange(-3.0, 3.0);
+    // axisY3->setGridLinePen((series2->pen()));
+
+
+    chart->addAxis(axisY3, Qt::AlignRight);
+    series2->attachAxis(axisX);
+    series2->attachAxis(axisY3);
+
+
+ //   chart->addSeries(series2);
+
+
+    // You have to create this
+//     chart->createDefaultAxes();
+
+
+
+
+
+
+ //   chart->axisX()->setLabelsFont(font);
+   // chart->axisY()->setLabelsFont(font);
+
 
 // We need performance
-ui->widget->setRenderHint(QPainter::Antialiasing, false);
+  ui->widget->setRenderHint(QPainter::Antialiasing, false);
 
 
    // chart->setTitle("Simple line chart example");
@@ -143,7 +186,7 @@ void MainWindow::on_pushButton_clicked()
 
     ui->lbTime->setText(QString::number(krono.getElapsed_us()));
 
-    qDebug("Elapsed : %f", krono.getElapsed_us());
+  //  qDebug("Elapsed : %f", krono.getElapsed_us());
 
 }
 

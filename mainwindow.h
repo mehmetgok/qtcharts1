@@ -5,6 +5,7 @@
 
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
 
 #include "clsChrono.h"
 
