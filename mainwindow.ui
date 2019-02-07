@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>QtCharts Sample</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -113,7 +113,7 @@
          </font>
         </property>
         <property name="text">
-         <string>TextLabel</string>
+         <string>lbElapsedTime</string>
         </property>
        </widget>
       </item>

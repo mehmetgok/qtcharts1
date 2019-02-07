@@ -25,9 +25,6 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-
-    void on_actionQuit_triggered();
-
     void on_pushButton_2_clicked();
 
 private:
@@ -36,22 +33,24 @@ private:
 
     int k;
 
-     QLineSeries *series;
-      QLineSeries *series2;
+     QLineSeries *seriesV;
+     QLineSeries *seriesI;
 
+     QVector<QPointF> pointsV;
+     QVector<QPointF> pointsI;
 
-      QVector<QPointF> pointsV;
-      QVector<QPointF> pointsI;
+     QValueAxis *axisYV;
+     QValueAxis *axisYI;
 
-      double angle;
-      double sin_angleV;
-      double sin_angleI;
+     QValueAxis *axisX;
 
+     double angle;
+     double sin_angleV;
+     double sin_angleI;
 
+     QChart *chart;
 
-      QChart *chart;
-
-      clsChrono krono;
+     clsChrono krono;
 
 };
 

@@ -18,10 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
     for (int i=0;i<2000;i++)
     {
 
-        angle =i*M_PI/180.0;
+        angle = i*M_PI/180.0;
 
-        sin_angleV = 3*cos(angle) + (qrand() % 3)/10.0;
-        sin_angleI = 3*sin(angle) + (qrand() % 3)/10.0;
+        sin_angleV = 9.0*cos(angle) + (qrand() % 3)/10.0;
+        sin_angleI = 3.0*sin(angle) + (qrand() % 3)/10.0;
 
         pointsV[i].setX(angle);
         pointsV[i].setY(sin_angleV);
@@ -30,23 +30,18 @@ MainWindow::MainWindow(QWidget *parent) :
         pointsI[i].setY(sin_angleI*0.5);
     }
 
+    seriesV = new QLineSeries();
+    seriesV->setUseOpenGL(true);
+    seriesV->setPen(QPen("black"));
+
+    seriesI = new QLineSeries();
+    seriesI->setUseOpenGL(true);
+    seriesI->setPen(QPen("red"));
 
 
-
-
-    series = new QLineSeries();
-    series->setUseOpenGL(true);
-    series->setPen(QPen("black"));
-
-
-
-    series2 = new QLineSeries();
-    series2->setUseOpenGL(true);
-    series2->setPen(QPen("red"));
-
-
-
- /*   series->append(0, 6);
+// Alternatif kullanim sekli
+ /*
+    series->append(0, 6);
     series->append(2, 4);
     series->append(3, 8);
     series->append(7.3, 4);
@@ -54,19 +49,26 @@ MainWindow::MainWindow(QWidget *parent) :
     series->append(11, 3);
 
     *series << QPointF(11, 1) << QPointF(13, 3) << QPointF(17, 6) << QPointF(18, 3) << QPointF(20, 2);
+*/
 
-    */
 
+// Buna gerek kalmadı. replace yordamı ihtiyaç duyulan bellek
+// alanını otomatik olarak ayarlıyor.
 
-    for (int i=0;i<2000;i++)
+/*    for (int i=0;i<2000;i++)
     {
         qreal angle = i*M_PI/180.0;
         qreal sin_angle = 3*sin(angle);
 
-        series->append(angle, sin_angle);
+        seriesV->append(angle, sin_angle);
 
-        series2->append(angle, sin_angle*0.5);
+        seriesI->append(angle, sin_angle*0.5);
     }
+*/
+
+    seriesV->replace(pointsV);
+    seriesI->replace(pointsI);
+
 
     // Font for graph axes
     QFont font;
@@ -78,88 +80,77 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     QValueAxis *axisX = new QValueAxis;
-    axisX->setTickCount(20);
+    // axisX->setTickCount(20);
     axisX->setLabelsFont(font);
+ //   axisX->setRange(0.0, 2000.0);
 
     chart->addAxis(axisX, Qt::AlignBottom);
 
 
-    QValueAxis *axisY = new QValueAxis;
+    axisYV = new QValueAxis;
 
-     axisY->setLabelsFont(font);
-    axisY->setLinePenColor(series->pen().color());
+    axisYV->setLabelsFont(font);
+    axisYV->setLinePenColor(seriesV->pen().color());
+    axisYV->setRange(-10.0, 10.0);
 
-    chart->addSeries(series);
+    chart->addSeries(seriesV);
 
-    chart->addAxis(axisY, Qt::AlignLeft);
+    // Gerilim degerleri icin gereken Y- ekseni
+    chart->addAxis(axisYV, Qt::AlignLeft);
 
-    series->attachAxis(axisX);
-    series->attachAxis(axisY);
+    seriesV->attachAxis(axisX);
+    seriesV->attachAxis(axisYV);
 
+    // Akım degerleri icin gereken Y- ekseni
+    axisYI = new QValueAxis;
+    axisYI->setLabelsFont(font);
 
-    QValueAxis *axisY3 = new QValueAxis;
+    chart->addSeries(seriesI);
+    axisYI->setLinePenColor(seriesI->pen().color());
 
-    axisY3->setLabelsFont(font);
-
-    chart->addSeries(series2);
-
-     axisY3->setLinePenColor(series2->pen().color());
-
-     axisY3->setRange(-3.0, 3.0);
+    axisYI->setRange(-3.0, 3.0);
     // axisY3->setGridLinePen((series2->pen()));
 
 
-    chart->addAxis(axisY3, Qt::AlignRight);
-    series2->attachAxis(axisX);
-    series2->attachAxis(axisY3);
+    chart->addAxis(axisYI, Qt::AlignRight);
+    seriesI->attachAxis(axisX);
+    seriesI->attachAxis(axisYI);
+
+    // Eğer eksenler otomatik olarak ayarlanmaz ise
+    // chart->createDefaultAxes();
+
+    // chart->axisX()->setLabelsFont(font);
+    // chart->axisY()->setLabelsFont(font);
 
 
- //   chart->addSeries(series2);
+    // We need performance
+    ui->widget->setRenderHint(QPainter::Antialiasing, false);
 
 
-    // You have to create this
-//     chart->createDefaultAxes();
-
-
-
-
-
-
- //   chart->axisX()->setLabelsFont(font);
-   // chart->axisY()->setLabelsFont(font);
-
-
-// We need performance
-  ui->widget->setRenderHint(QPainter::Antialiasing, false);
-
-
-   // chart->setTitle("Simple line chart example");
-
-    // QChartView *chartView = new QChartView(chart);
-
+    // chart->setTitle("Simple line chart example");
     ui->widget->setChart(chart);
-
-
-
-
-
 
 }
 
 MainWindow::~MainWindow()
 {
+
+
+    delete seriesV;
+    delete seriesI;
+
+    delete axisYI;
+    delete axisYV;
+
+    delete axisX;
+
+    delete chart;
+
     delete ui;
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-
-
-   // QVector<QPointF> oldPoints = series->points();
-
-
-
-
 
     krono.startChrono();
 
@@ -178,22 +169,15 @@ void MainWindow::on_pushButton_clicked()
     }
 
 
+    seriesV->replace(pointsV);
+    seriesI->replace(pointsI);
 
-
-    series->replace(pointsV);
-
-    series2->replace(pointsI);
-
-    ui->lbTime->setText(QString::number(krono.getElapsed_us()));
+    ui->lbTime->setText(QString::number(krono.getElapsed_us()) + tr(" us"));
 
   //  qDebug("Elapsed : %f", krono.getElapsed_us());
 
 }
 
-void MainWindow::on_actionQuit_triggered()
-{
-
-}
 
 void MainWindow::on_pushButton_2_clicked()
 {
