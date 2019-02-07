@@ -36,6 +36,41 @@ QChart *chart;
 
 * QtChart: Çizim işlemlerinin gerçekleştirilmesini sağlayan nesnedir.
 
+### Örnek Uygulama
+Örnek uygulama olarak toplam 200 adet noktaya sahip olan bir grafiğe ait çizim işlemi gerçekleştirilmiştir. Bu uygulama şu adımları içermektedir:
+
+1. QPontF tipindeki vektörü ***(pointsV)*** 200 elemana gemişlet.
+2. pointsV elemanlarının X ve Y değerlerini ayarla.
+3. QLineSeries tipindeki ***seriesV*** nesnesine bu noktaları ***replace*** metodu ile aktar.
+4. QtChart sınıfından chart nesnesini üret.
+5. Eksenleri üret ve ayarlarını yap.
+6. seriesV nesnesini QtChart bileşenine ekle.
+7. Eksenleri QtChart bileşenine bağla.
+8. Eksenleri seriesV nesnesine bağla.
+
+Aşağıdaki kod bloğu 3. adıma kadar olan işlemleri içermektedir.
+
+```
+pointsV.resize(200);
+
+for (int i=0;i<200;i++) {
+    pointsV[i].setX(i/1.0);
+    pointsV[i].setY(i/1.0);
+}
+
+seriesV = new QLineSeries();
+seriesV->setUseOpenGL(true);
+seriesV->setPen(QPen("blue"));
+
+/*
+for (int i=0;i<200;i++)
+    seriesV->append(i/1.0, 1000.0);
+*/
+
+seriesV->replace(pointsV);
+```
+
+
 
 
 
