@@ -1,7 +1,12 @@
 # qtcharts_sample
-### Qt 5.7 Sample QtCharts Application
+
+![qtcharts_sample ekran goruntusu](qtcharts_sample.png)
+
+### Qt 5.7 Örnek QtCharts Uygulaması
 
 QtCharts bileşeni Qt çerçevesi ile grafik çizdirmek için kullanılan bir bileşen. Daha önce Qwt ya da QCustomPlot gibi farklı üçüncü parti bileşenleri kullanmış olanalar için yerel bir (native) bir çözüm olarak tercih edilebilir. Açık kaynak tarafında Digia tarafından GPL lisansı ile dağıtılmaktadır. Qt 5.7 ile sürümü ile açık kaynak dağıtımına eklenmiştir. OpenGL desteği etkin olarak kullanılabilmektedir.
+
+Bu uygulamada siyah ile çizilen grafik gerilim (V) ve kırmızı ile çizdirilen grafik akım (I) grafiğidir. Her ikisinin de Y- eksenleri farklı olarak ayarlanmıştır. X- sekseni her iki seri içinde aynı olup **radyan cinsinden açı değerini** göstermektedir. X serisinden 2000 nokta olmasına karşın X- ekseni 34 değerine yakın bir radyan açı sonlanmıştır. **Draw** butonuna her tıklandığında sone eklenen 0 değerleri görünmektedir. Proje içindeki **Krono** sınıfı ile çizim için geçen süre **us** cinsinden uygulamanın durum çubuğuna yazdırılmaktadır.
 
 Bu bileşeni kullanabilmek için ilk QtCreator **.pro** (proje) dosyasına **charts** kütüphanesini ekleniyor. 
 
